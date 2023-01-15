@@ -16,7 +16,7 @@ class Postgres extends Crude {
         const connection = new Sequelize(
             'beers', 
             'geleia',
-            'senhasupersecret',
+            'senhasupersecreta',
             {
                 host: 'localhost',
                 dialect: 'postgres',

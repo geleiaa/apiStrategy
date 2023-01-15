@@ -1,0 +1,18 @@
+version: '3.3'
+
+services:
+    postegres:
+        restart: on-failure
+        image: postgres:alpine3.17
+        ports:
+        - "5432:5432"
+        environment:
+          POSTGRES_PASSWORD: senhasupersecreta 
+          POSTGRES_USER: geleia
+          POSTGRES_DB: beers
+
+    mongodb:
+        restart: on-failure
+        image: mongo:4.4-focal
+        ports:
+        - "27017:27017" 
