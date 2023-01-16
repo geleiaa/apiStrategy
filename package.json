@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:pg": "mocha --reporter=nyan src/testPostgres.js",
-    "test:mg": "mocha --reporter=nyan src/testMong.js"
+    "start": "node api/api.js",
+    "test:pg": "mocha --reporter=nyan tests/testPostgres.js",
+    "test:mg": "mocha --reporter=nyan tests/testMong.js",
+    "test:api": "mocha --reporter=nyan tests/testApi.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/hapi": "^21.2.0",
     "mocha": "^10.2.0",
     "mongoose": "^6.8.3",
     "pg": "^8.8.0",

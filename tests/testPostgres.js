@@ -1,7 +1,7 @@
 const assert = require('assert');
-const Postgres = require('./db/strategies/postgres/postgres');
-const beerSchema = require('./db/strategies/postgres/schema/beerSchema');
-const Context = require('./db/strategies/base/ContextStrategy');
+const Postgres = require('./..//src/db/strategies/postgres/postgres');
+const beerSchema = require('./../src/db/strategies/postgres/schema/beerSchema');
+const Context = require('./../src/db/strategies/base/ContextStrategy');
 
 
 const BIER_OBJETO = { nome: 'Skol', preco: '2.99' }
