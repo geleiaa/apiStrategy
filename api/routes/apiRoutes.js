@@ -28,6 +28,18 @@ class BeerRoutes {
             }
         }
     }
+
+    create(){
+        return {
+            path: '/beers',
+            method: 'POST',
+            handler: (request, headers) =>{
+                const req = request.payload
+                request.log('read')
+                return this.db.create(req)
+            }
+        }
+    }
 }
 
 module.exports = BeerRoutes;

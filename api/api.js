@@ -12,6 +12,8 @@ const mongodb = new Context(new MongoDB(connection, beerSchema))
 
 app.route(new apiRoutes(mongodb).list());
 
+app.route(new apiRoutes(mongodb).create());
+
 
 await app.start();
 console.log('Server Hapi up in port', app.info.port);
@@ -19,4 +21,4 @@ console.log('Server Hapi up in port', app.info.port);
 return app
 }
 
-module.exports = init()
+module.exports = init();

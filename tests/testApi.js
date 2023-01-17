@@ -3,9 +3,11 @@ const api = require('./../api/api');
 
 let app = {};
 
+const BEER_TESTE = { nome: 'TesteCreate', preco: 3.99 }
+
 describe('Testes da Api', function () {
     this.beforeAll(async () => {
-        app = await api // espera a api startar
+        app = await api // espera o server startar
     })
 
     it('Listar na Api', async () =>{
@@ -47,7 +49,7 @@ describe('Testes da Api', function () {
     })
 
     it('Filtrar um item da query', async () => {
-        const NAME = ''
+        const NAME = 'Teste'
         const result = await app.inject({
             method: 'GET',
             url: `/beers?skip=0&limit=3&nome=${NAME}`
@@ -60,4 +62,17 @@ describe('Testes da Api', function () {
         assert.ok(dados[0].nome, NAME)
 
     })
+
+    it('Create na API', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: '/beers',
+            payload: BEER_TESTE
+        })
+
+        const statusCode = result.statusCode
+        assert.deepEqual(statusCode, 200)
+    })
+
+
 })

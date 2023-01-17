@@ -33,7 +33,7 @@ class MongoDB extends Crude {
         Mongoose.connect('mongodb://127.0.0.1:27017/', err => {
             if (err) console.error(err)
             console.log(
-              `Connection State: ${STATUS[this._connection.connection.readyState]}`
+              `Connection State: ${STATUS[connection.readyState]}`
             )
           } 
         );
