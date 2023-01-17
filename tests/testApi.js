@@ -3,17 +3,22 @@ const api = require('./../api/api');
 
 let app = {};
 
-const BEER_TESTE = { nome: 'TesteCreate', preco: 3.99 }
-const BEER_TESTE_1 = { nome: 'Test in ingleis', preco: 2.19 }
-const BEER_TESTE_2 = { nome: 'Testando só', preco: 1.90 }
-const BEER_TESTE_3 = { nome: 'Mais um teste', preco: 5.99 }
+const BEER_TESTE = { nome: 'TesteCreate', preco: 399 }
+const BEER_TESTE_UP = { nome: 'TesteUpdate', preco: 399 }
+const BEER_TESTE_1 = { nome: 'Test in ingleis', preco: 219 }
+const BEER_TESTE_2 = { nome: 'Testando só', preco: 190 }
+const BEER_TESTE_3 = { nome: 'Mais um teste', preco: 599 }
+let TESTE_ID = ''
 
 describe('Testes da Api', function () {
     this.beforeAll(async () => {
         app = await api // espera o server startar
-        await app.inject({ method: 'POST', url: '/beers', payload: BEER_TESTE_1 })
-        await app.inject({ method: 'POST', url: '/beers', payload: BEER_TESTE_2 })
-        await app.inject({ method: 'POST', url: '/beers', payload: BEER_TESTE_3 })
+        await app.inject({ method: 'POST', url: '/beers', payload: JSON.stringify(BEER_TESTE_1) })
+        await app.inject({ method: 'POST', url: '/beers', payload: JSON.stringify(BEER_TESTE_2) })
+        await app.inject({ method: 'POST', url: '/beers', payload: JSON.stringify(BEER_TESTE_3) })
+
+        const dados = JSON.parse((result.payload))
+        TESTE_ID = dados._id
     })
 
     it('Listar na Api', async () =>{
@@ -84,12 +89,31 @@ describe('Testes da Api', function () {
         const result = await app.inject({
             method: 'POST',
             url: '/beers',
-            payload: BEER_TESTE
+            payload: JSON.stringify(BEER_TESTE)
         })
 
         const statusCode = result.statusCode
-        assert.deepEqual(statusCode, 200)
+        const { message, _id } = JSON.parse(result.payload)
+
+        assert.ok(statusCode === 200)
+        assert.notStrictEqual(_id, undefined)
+        assert.deepEqual(message, 'Beer cadastrada successful!!')
     })
 
+    it('Atualizar na API', async () => {
+        const _id = TESTE_ID
+        const expected = { nome: 'Atualizado!!'}
 
+        const result = await app.inject({
+            method: 'PATCH',
+            url: `/beers/${_id}`,
+            payload: JSON.stringify(expected)
+        })
+
+        const statusCode = result.statusCode
+        const dados = JSON.parse(result.payload)
+
+        assert.ok(statusCode === 200)
+        assert.deepEqual(dados.message, 'Beer atualizada!!!')
+    })
 })

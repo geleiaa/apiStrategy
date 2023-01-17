@@ -11,6 +11,9 @@ class BeerRoutes {
             method: 'GET',
             config: {
                 validate: {
+                    failAction: (request, headers, erro) => {
+                        throw erro;
+                    },
                     query: {
                         skip: Joi.number().integer().default(0),
                         limit: Joi.number().integer().default(6),
@@ -38,10 +41,66 @@ class BeerRoutes {
         return {
             path: '/beers',
             method: 'POST',
-            handler: (request, headers) =>{
-                const req = request.payload
-                request.log('read')
-                return this.db.create(req)
+            config: {
+                validate: {
+                    failAction: (request, headers, erro) => {
+                        throw erro;
+                    },
+                    payload: {
+                        nome: Joi.string().required().min(3).max(35),
+                        preco: Joi.number().integer().default(199)
+                    }        
+                }
+            },
+            handler: async (request, headers) =>{
+                try{
+
+                    const req = request.payload
+                    result = await this.db.create(req)
+                    console.log('result', result);
+                    return { message: 'Beer cadastrada successful!!', id: result._id }
+
+                }catch(err){
+                    console.log('Deu Ruim', err);
+                }
+            }
+        }
+    }
+
+    update(){
+        return {
+            path: '/beers/{id}',
+            method: 'PATCH',
+            config:{
+                validate: {
+                    params: {
+                        id: Joi.string().required()
+                    },
+                    payload: {
+                        nome: Joi.string().min(3).max(35),
+                        preco: Joi.string().min(2).max(10)
+                    }
+                }
+            },
+            handler: async (request, headers) =>{
+                try{
+                    const { id } = request.params;
+                    const { payload } = request;
+
+                    const dadosString = JSON.stringify(payload)
+                    const dados = JSON.parse(dadosString)
+
+                    const result = await this.db.update(id, dados)
+
+                    if(result.modifiedCount !== 1) return {
+                        message: 'Erro ao atualizar'
+                    }
+
+                    return { message: 'Beer atualizada!!!'}
+
+                }catch(err){
+                    console.log('Deu Ruim',err);
+                }
             }
         }
     }
