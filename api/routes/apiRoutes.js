@@ -1,3 +1,5 @@
+const Joi = require('joi');
+
 class BeerRoutes {
     constructor(db){
         this.db = db
@@ -7,17 +9,20 @@ class BeerRoutes {
         return {
             path: '/beers',
             method: 'GET',
+            config: {
+                validate: {
+                    query: {
+                        skip: Joi.number().integer().default(0),
+                        limit: Joi.number().integer().default(6),
+                        nome: Joi.string().min(3).max(25)
+                    }
+                }
+            },
             handler: (request, headers) =>{
                 try{
                     const { nome, skip, limit } = request.query
 
-                    let query = {}
-
-                    if(nome) query.nome = nome
-
-                    if(isNaN(skip)) throw Error('Tipo do skip incorreto')
-
-                    if(isNaN(limit)) throw Error('Tipo do limit incorreto')
+                    let query = nome ? { nome: {$regex: `.*${nome}*.` } } : {}
 
                     return this.db.read(query , skip, limit)
 
