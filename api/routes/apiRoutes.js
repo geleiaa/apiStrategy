@@ -11,6 +11,9 @@ class BeerRoutes {
             path: '/beers',
             method: 'GET',
             config: {
+                tags: ['api'],
+                description: 'Lista as beers',
+                notes: 'pode paginar e filtrar pelo nome',
                 validate: {
                     failAction: (request, headers, erro) => {
                         throw erro;
@@ -44,6 +47,9 @@ class BeerRoutes {
             path: '/beers',
             method: 'POST',
             config: {
+                tags: ['api'],
+                description: 'Cadastra beers',
+                notes: 'cadastra beers por nome e preço',
                 validate: {
                     failAction: (request, headers, erro) => {
                         throw erro;
@@ -75,6 +81,9 @@ class BeerRoutes {
             path: '/beers/{id}',
             method: 'PATCH',
             config:{
+                tags: ['api'],
+                description: 'Atualiza beers',
+                notes: 'atualiza os campos da beer por ID',
                 validate: {
                     failAction: (request, headers, erro) => {
                         throw erro;
@@ -115,6 +124,9 @@ class BeerRoutes {
             path: '/beers/{id}',
             method: 'DELETE',
             config: {
+                tags: ['api'],
+                description: 'Delete beers',
+                notes: 'remove beers por ID',
                 validate: {
                     failAction: (request, headers, erro) => {
                         throw erro;
