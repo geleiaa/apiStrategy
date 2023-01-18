@@ -5,10 +5,12 @@ let app = {};
 
 const BEER_TESTE = { nome: 'TesteCreate', preco: 399 }
 const BEER_TESTE_UP = { nome: 'TesteUpdate', preco: 399 }
+//const BEER_TESTE_DEL = { nome: 'TesteDelete', preco: 299 }
 const BEER_TESTE_1 = { nome: 'Test in ingleis', preco: 219 }
 const BEER_TESTE_2 = { nome: 'Testando só', preco: 190 }
 const BEER_TESTE_3 = { nome: 'Mais um teste', preco: 599 }
 let TESTE_ID = ''
+// let TESTE_ID_DEL = ''
 
 describe('Testes da Api', function () {
     this.beforeAll(async () => {
@@ -17,8 +19,14 @@ describe('Testes da Api', function () {
         await app.inject({ method: 'POST', url: '/beers', payload: JSON.stringify(BEER_TESTE_2) })
         await app.inject({ method: 'POST', url: '/beers', payload: JSON.stringify(BEER_TESTE_3) })
 
+        // resultDel = await app.inject({ method: 'POST', url: '/beers', payload: JSON.stringify(BEER_TESTE_DEL) })
+        // const dadosDel = JSON.parse((resultDel.payload))
+        // TESTE_ID_DEL = dadosDel.id
+        // console.log('Id Delete Create', TESTE_ID_DEL);
+
+        result = await app.inject({ method: 'POST', url: '/beers', payload: JSON.stringify(BEER_TESTE_UP) })
         const dados = JSON.parse((result.payload))
-        TESTE_ID = dados._id
+        TESTE_ID = dados.id
     })
 
     it('Listar na Api', async () =>{
@@ -93,10 +101,10 @@ describe('Testes da Api', function () {
         })
 
         const statusCode = result.statusCode
-        const { message, _id } = JSON.parse(result.payload)
+        const { message, id } = JSON.parse(result.payload)
 
         assert.ok(statusCode === 200)
-        assert.notStrictEqual(_id, undefined)
+        assert.notStrictEqual(id, undefined)
         assert.deepEqual(message, 'Beer cadastrada successful!!')
     })
 
@@ -115,5 +123,22 @@ describe('Testes da Api', function () {
 
         assert.ok(statusCode === 200)
         assert.deepEqual(dados.message, 'Beer atualizada!!!')
+    })
+
+    it('Delete na API', async () => {
+        const _id = TESTE_ID
+        const result = await app.inject({
+            method: 'DELETE',
+            url: `/beers/${_id}`
+        })
+
+        // console.log('Id delete Test', TESTE_ID_DEL);
+        // console.log(result);
+
+        const statusCode = result.statusCode
+        const dados = JSON.parse(result.payload)
+
+        assert.ok(statusCode === 200)
+        assert.deepEqual(dados.message, 'Item removido com sucesso!')
     })
 })

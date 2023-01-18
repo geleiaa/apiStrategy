@@ -17,6 +17,10 @@ app.route(new apiRoutes(mongodb).list());
 
 app.route(new apiRoutes(mongodb).create());
 
+app.route(new apiRoutes(mongodb).update());
+
+app.route(new apiRoutes(mongodb).delete());
+
 await app.start();
 console.log('Server Hapi up in port', app.info.port);
 

@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const Boom = require('@hapi/boom');
 
 class BeerRoutes {
     constructor(db){
@@ -31,6 +32,7 @@ class BeerRoutes {
 
                 }catch(err){
                     console.log(err);
+                    return Boom.internal()
                 }
                 
             }
@@ -56,12 +58,13 @@ class BeerRoutes {
                 try{
 
                     const req = request.payload
-                    result = await this.db.create(req)
-                    console.log('result', result);
+                    const result = await this.db.create(req)
+
                     return { message: 'Beer cadastrada successful!!', id: result._id }
 
                 }catch(err){
                     console.log('Deu Ruim', err);
+                    return Boom.internal()
                 }
             }
         }
@@ -73,6 +76,9 @@ class BeerRoutes {
             method: 'PATCH',
             config:{
                 validate: {
+                    failAction: (request, headers, erro) => {
+                        throw erro;
+                    },
                     params: {
                         id: Joi.string().required()
                     },
@@ -92,15 +98,47 @@ class BeerRoutes {
 
                     const result = await this.db.update(id, dados)
 
-                    if(result.modifiedCount !== 1) return {
-                        message: 'Erro ao atualizar'
-                    }
+                    if(result.modifiedCount !== 1) return Boom.preconditionFailed('Item nao encontrado')
 
                     return { message: 'Beer atualizada!!!'}
 
                 }catch(err){
                     console.log('Deu Ruim',err);
+                    return Boom.internal()
                 }
+            }
+        }
+    }
+
+    delete(){
+        return {
+            path: '/beers/{id}',
+            method: 'DELETE',
+            config: {
+                validate: {
+                    failAction: (request, headers, erro) => {
+                        throw erro;
+                    },
+                    params: {
+                        id: Joi.string().required()
+                    }
+                }
+            },
+            handler: async (request) => {
+                try{
+
+                    const { id } = request.params;
+                    const result = await this.db.delete(id)
+
+                    if(result.deletedCount !== 1) return Boom.preconditionFailed('Item nao encontrado')
+
+                    return { message: 'Item removido com sucesso!'}
+
+                }catch(err){
+                    console.log(err);
+                    return Boom.internal()
+                } 
+
             }
         }
     }
