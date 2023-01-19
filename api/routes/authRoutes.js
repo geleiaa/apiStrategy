@@ -2,6 +2,8 @@ const Joi = require('joi');
 const Boom = require('@hapi/boom');
 const Jwt = require('jsonwebtoken');
 
+const Password = require('../src/helpers/passwordHelper');
+
 const USER = {
     username: 'TestUser',
     password:  'pass1234'
@@ -11,6 +13,7 @@ class AuthRoutes {
     constructor(key) {
         //super()
         this.secret = key
+        this.db = db
     }
 
     login() {
@@ -18,10 +21,10 @@ class AuthRoutes {
             path: '/login',
             method: 'POST',
             config: {
+                tags: ['api'],
                 description: 'fazer login',
                 notes: 'retorna um token',
                 auth: false,
-                tags: ['api'],
                 validate: {
                     payload: {
                         username: Joi.string().required(),
@@ -30,18 +33,24 @@ class AuthRoutes {
                 }
             },
 
-            handler: (request, headers) =>{
+            handler: async (request, headers) =>{
                 const { username, password } = request.payload
 
-                if(username !== USER.username || password !== USER.password) return Boom.unauthorized()
+                const [user] = await this.db.read({
+                    username: username.toLowerCase()
+                })
+
+                if(!user) return Boom.unauthorized('Usuário não existe')
+
+                const validUser = await Password.comparePass(password. user.password)
+
+                if(!validUser) return Boom.unauthorized('Usuário ou Senha invalido')
 
                 return {
                     token: Jwt.sign({
                         username: username
                     }, this.secret)
                 }
-
-                console.log(token);
             }
         }
     }

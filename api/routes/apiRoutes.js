@@ -18,6 +18,9 @@ class BeerRoutes {
                     failAction: (request, headers, erro) => {
                         throw erro;
                     },
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown(),
                     query: {
                         skip: Joi.number().integer().default(0),
                         limit: Joi.number().integer().default(6),
@@ -54,6 +57,9 @@ class BeerRoutes {
                     failAction: (request, headers, erro) => {
                         throw erro;
                     },
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown(),
                     payload: {
                         nome: Joi.string().required().min(3).max(35),
                         preco: Joi.number().integer().default(199)
@@ -88,6 +94,9 @@ class BeerRoutes {
                     failAction: (request, headers, erro) => {
                         throw erro;
                     },
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown(),
                     params: {
                         id: Joi.string().required()
                     },
@@ -131,6 +140,9 @@ class BeerRoutes {
                     failAction: (request, headers, erro) => {
                         throw erro;
                     },
+                    headers: Joi.object({
+                        authorization: Joi.string().required()
+                    }).unknown(),
                     params: {
                         id: Joi.string().required()
                     }
