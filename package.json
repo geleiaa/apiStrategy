@@ -7,7 +7,8 @@
     "start": "node api/api.js",
     "test:pg": "mocha --reporter=nyan tests/testPostgres.js",
     "test:mg": "mocha --reporter=nyan tests/testMong.js",
-    "test:api": "mocha --reporter=nyan tests/testApi.js"
+    "test:api": "mocha --reporter=nyan tests/testApi.js",
+    "test:auth": "mocha --reporter=nyan tests/authTest.js"
   },
   "keywords": [],
   "author": "",
@@ -17,8 +18,10 @@
     "@hapi/hapi": "^21.2.0",
     "@hapi/inert": "^7.0.0",
     "@hapi/vision": "^7.0.0",
+    "hapi-auth-jwt2": "^10.4.0",
     "hapi-swagger": "^15.0.0",
     "joi": "^17.7.0",
+    "jsonwebtoken": "^9.0.0",
     "mocha": "^10.2.0",
     "mongoose": "^6.8.3",
     "pg": "^8.8.0",
