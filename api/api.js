@@ -16,7 +16,7 @@ const Context = require('./../src/db/strategies/base/ContextStrategy');
 
 const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
-const KEY_SUPER_SECR = 'SECRETA'
+const KEY_SUPER_SECR = process.env.SALT_PASS
 
 const init = async () =>{
 const app = Hapi.Server({ port:4000 });

@@ -5,7 +5,7 @@ const {
 } = require('util')
 const hashAsync = promisify(Bcrypt.hash)
 const compareAsync = promisify(Bcrypt.compare)
-const SALT = 3
+const SALT = parseInt(process.env.SALT_PASS)
 
 class Password {
 	 static hashPass(pass) {
