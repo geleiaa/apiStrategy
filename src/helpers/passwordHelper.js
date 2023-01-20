@@ -1,14 +1,13 @@
 const Bcrypt = require('bcrypt');
 
-const {
-    promisify
-} = require('util')
+const { promisify } = require('util')
 const hashAsync = promisify(Bcrypt.hash)
 const compareAsync = promisify(Bcrypt.compare)
 const SALT = parseInt(process.env.SALT_PASS)
 
 class Password {
 	 static hashPass(pass) {
+	 	console.log(process.env)
 	 	return hashAsync(pass, SALT)
 	 }
 

@@ -13,16 +13,16 @@ class Postgres extends Crude {
     }
 
     static connect() {
-        const connection = new Sequelize(process.env.POSTGRES_URL, {
+        const connection = new Sequelize(toString(process.env.POSTGRES_URL), {
             //case sensitive
             quoteIdentifiers: false,
-                // deprecation warning
+            // deprecation warning
             operatorsAliases: false,
             logging:false,
-            ssl: process.env.SSL_DB,
-            dialectOptions: {
-                ssl: process.env.SSL_DB
-            }
+            // ssl: process.env.SSL_DB,
+            // dialectOptions: {
+            //     ssl: process.env.SSL_DB
+            // }
         });
 
         return connection
