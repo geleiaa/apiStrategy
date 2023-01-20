@@ -1,6 +1,7 @@
 const assert = require('assert');
 const api = require('../api/api');
 const Password = require('../src/helpers/passwordHelper');
+const Context = require('./../src/db/strategies/base/ContextStrategy');
 const UserSchema = require('./../src/db/strategies/postgres/schema/userSchema');
 const Postgres = require('./../src/db/strategies/postgres/postgres');
 
@@ -12,8 +13,8 @@ const USER = {
 }
 
 const USER_NO_DB = {
-    ...USER,
-    password: '$2b$04$AWjPE3ALC180/99GyEc3tOo8eRTlOpjPt3A/UhtUJFPrLEajbpm3O'
+    ...USER.username.toLowerCase(),
+    password: '$2b$04$9Glu1m7zAspBHJmdN4/Lm.XpKj8RqHQwzvL3NJmBq2UtcmBpElUgy'
 }
 
 
@@ -26,7 +27,7 @@ describe('Teste de Auth', function () {
         const model = await Postgres.defineModel(connectionPostgres, UserSchema)
         const context = new Context(new Postgres(connectionPostgres, model))
 
-        //await context.update(null, USER, true)
+        await context.update(null, USER_NO_DB, true) // registra user no DB
     });
 
     it('Obter Token', async () => {
@@ -36,11 +37,11 @@ describe('Teste de Auth', function () {
             payload: USER
         });
 
+        console.log('result', result.result)
+
         const statusCode = result.statusCode;
         assert.deepEqual(statusCode, 200)
         assert.ok(JSON.parse(result.payload).token.length > 10)
-
-        console.log(result)
     });
 
     it('Teste do Nao Autorizado', async () => {
@@ -52,6 +53,8 @@ describe('Teste de Auth', function () {
                 password: 'passErrado'
             }
         });
+
+        //console.log(result.result)
 
         const statusCode = result.statusCode
 

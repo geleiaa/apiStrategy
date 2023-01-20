@@ -2,15 +2,15 @@ const Joi = require('joi');
 const Boom = require('@hapi/boom');
 const Jwt = require('jsonwebtoken');
 
-const Password = require('../src/helpers/passwordHelper');
+const Password = require('./../../src/helpers/passwordHelper');
 
-const USER = {
-    username: 'TestUser',
-    password:  'pass1234'
-}
+// const USER = {
+//     username: 'TestUser',
+//     password:  'pass1234'
+// }
 
 class AuthRoutes {
-    constructor(key) {
+    constructor(key, db) {
         //super()
         this.secret = key
         this.db = db
@@ -40,9 +40,11 @@ class AuthRoutes {
                     username: username.toLowerCase()
                 })
 
+                console.log('user da rota', [user]);
+
                 if(!user) return Boom.unauthorized('Usuário não existe')
 
-                const validUser = await Password.comparePass(password. user.password)
+                const validUser = await Password.comparePass(password, user.password)
 
                 if(!validUser) return Boom.unauthorized('Usuário ou Senha invalido')
 

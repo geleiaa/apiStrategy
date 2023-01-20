@@ -10,7 +10,7 @@ const MongoDB = require('./../src/db/strategies/mongodb/mongodb');
 const beerSchema = require('./../src/db/strategies/mongodb/schemas/beerSchema');
 
 const Postgres = require('./../src/db/strategies/postgres/postgres');
-const UserSchema = require('./../src/db/strategies/postgres/schemas/userSchema');
+const UserSchema = require('./../src/db/strategies/postgres/schema/userSchema');
 
 const Context = require('./../src/db/strategies/base/ContextStrategy');
 
@@ -46,10 +46,15 @@ await app.register([
 
 app.auth.strategy('jwt', 'jwt', {
     key: KEY_SUPER_SECR,
-    validate: (dado, request) => {
-        return {
-            isValid: true
-        }
+    validate: async (dado, request) => {
+        console.log('dado', dado);
+        const [result] = await postgresDB.read({
+            username: dado.username.toLowerCase()
+        })
+
+        if(!result) return { isValid: false }
+
+        return { isValid: true }
     }
 })
 app.auth.default('jwt')
@@ -64,7 +69,7 @@ app.route(new apiRoutes(mongodb).update());
 
 app.route(new apiRoutes(mongodb).delete());
 
-app.route(new authRoutes(KEY_SUPER_SECR).login());
+app.route(new authRoutes(KEY_SUPER_SECR, postgresDB).login());
 
 await app.start();
 console.log('Server Hapi up in port', app.info.port);

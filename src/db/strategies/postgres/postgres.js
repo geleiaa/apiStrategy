@@ -59,8 +59,9 @@ class Postgres extends Crude {
         return this._schema.findAll({where: item, raw: true })
     }
 
-    async update(id, item){
-        return this._schema.update(item, { where: {id: id} })
+    async update(id, item, upsert = false){
+        const up = upsert ? 'upsert' : 'update'
+        return this._schema[up](item, { where: {id: id} })
     }
 
     async delete(id) {

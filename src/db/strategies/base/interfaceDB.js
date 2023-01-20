@@ -14,7 +14,7 @@ class Crude {
         throw new NotImplmentedExcpt()
     }
 
-    update(id, item){
+    update(id, item, upsert){
         throw new NotImplmentedExcpt()
     }
 
