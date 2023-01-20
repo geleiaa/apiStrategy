@@ -4,10 +4,10 @@ const Mongoose = require('mongoose');
 Mongoose.set('strictQuery', true);
 
 const STATUS = {
-    0: 'Disconectado',
+    0: 'Desconectado',
     1: 'Conectado',
     2: 'Conectando',
-    3: 'Disconectando',
+    3: 'Desconectando',
 }
 
 class MongoDB extends Crude {

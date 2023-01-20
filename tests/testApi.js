@@ -138,6 +138,8 @@ describe('Testes da Api', function () {
         const statusCode = result.statusCode
         const dados = JSON.parse(result.payload)
 
+        console.log(result)
+
         assert.ok(statusCode === 200)
         assert.deepEqual(dados.message, 'Item removido com sucesso!')
     })
