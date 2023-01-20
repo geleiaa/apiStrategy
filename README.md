@@ -16,3 +16,6 @@
 2. ver os logs dos containers depois de subir ``` docker-compose logs ```
 
 3. Quando terminar de testar é só matar os containers com ``` docker-compose down ```
+
+
+*NOTE: 1- problemas com as envs... as envs não são visiveis dentro dos testes, só fuciona se passar as configs no próprio arquivo de teste. 2- Verificar o authTest, talvez o usuário de teste não está sendo cadastrado corretamente no banco PG.

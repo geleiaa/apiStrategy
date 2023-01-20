@@ -30,7 +30,7 @@ class MongoDB extends Crude {
     }
 
     static connect() {
-        Mongoose.connect(process.env.MONGO_DB, err => {
+        Mongoose.connect(process.env.MONGO_URL, err => {
             if (err) console.error(err)
             console.log(
               `Connection State: ${STATUS[connection.readyState]}`

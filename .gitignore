@@ -1,5 +1,5 @@
 /node_modules
 /scripts
 /old
-/config
+/src/config
 package-lock.json
