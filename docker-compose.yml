@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-    postegres:
+    postgres:
         restart: on-failure
         image: postgres:alpine3.17
         ports:
@@ -15,4 +15,12 @@ services:
         restart: on-failure
         image: mongo:4.4-focal
         ports:
-        - "27017:27017" 
+        - "27017:27017"
+
+    adminer:
+        restart: on-failure
+        image: adminer:4.8.0-standalone
+        ports:
+        - "8080:8080"
+        links:
+        - postgres:beers
