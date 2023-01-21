@@ -29,8 +29,8 @@ class MongoDB extends Crude {
 
     }
 
-    static connect() {
-        Mongoose.connect(process.env.MONGO_URL, err => {
+    static connect() { //process.env.MONGO_URL
+        Mongoose.connect('mongodb://localhost:27017/', err => {
             if (err) console.error(err)
             console.log(
               `Connection State: ${STATUS[connection.readyState]}`

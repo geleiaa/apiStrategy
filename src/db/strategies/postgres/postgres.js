@@ -12,8 +12,14 @@ class Postgres extends Crude {
         this._connection = connection
     }
 
-    static connect() {
-        const connection = new Sequelize(toString(process.env.POSTGRES_URL), {
+    static connect() { //process.env.POSTGRES_URL
+        const connection = new Sequelize(
+            'beers',
+            'geleia',
+            'senhasupersecreta',
+            { 
+            host: 'localhost',
+            dialect: 'postgres',
             //case sensitive
             quoteIdentifiers: false,
             // deprecation warning

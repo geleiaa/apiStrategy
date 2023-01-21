@@ -1,8 +1,3 @@
-const dotenv = require('dotenv');
-const { join } = require('path');
-const env = process.env.NODE_ENV || "dev"
-dotenv.config({ path: join(__dirname, './../src/config',  `.env.${env}`) });
-
 const assert = require('assert');
 const beerSchema = require('./../src/db/strategies/mongodb/schemas/beerSchema');
 const Context = require('./../src/db/strategies/base/ContextStrategy');

@@ -1,15 +1,11 @@
 
-const dotenv = require('dotenv');
-const { join } = require('path');
-//const { ok } = require('assert');
-
-const env = process.env.NODE_ENV || "dev"
-//ok(env === "prod" || env === "dev", "environment inválida! Ou prod ou dev");
-
-dotenv.config({ path: join(__dirname, './../src/config',  `.env.${env}`) });
-
-console.log('ENV', process.env);
-
+// const dotenv = require('dotenv');
+// const { join } = require('path');
+// //const { ok } = require('assert');
+// const env = process.env.NODE_ENV || "dev"
+// //ok(env === "prod" || env === "dev", "environment inválida! Ou prod ou dev");
+// dotenv.config({ path: join(__dirname, './../config',  `env.${env}`) });
+// console.log('ENV', process.env);
 const Hapi = require('@hapi/hapi');
 const Joi = require('joi');
 const Swagger = require('hapi-swagger');
@@ -28,10 +24,10 @@ const Context = require('./../src/db/strategies/base/ContextStrategy');
 
 const apiRoutes = require('./routes/apiRoutes');
 const authRoutes = require('./routes/authRoutes');
-const KEY_SUPER_SECR = process.env.JWT_KEY
+const KEY_SUPER_SECR = 'SECRETA' //process.env.JWT_KEY
 
 const init = async () =>{
-const app = Hapi.Server({ port:process.env.PORT });
+const app = Hapi.Server({ port: 4000 }); //process.env.PORT
 
 const connectionPostgres = await Postgres.connect()
 const model = await Postgres.defineModel(connectionPostgres, UserSchema)

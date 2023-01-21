@@ -35,7 +35,7 @@ class AuthRoutes {
 
             handler: async (request, headers) =>{
                 const { username, password } = request.payload
-
+                console.log(request.payload);
                 const [user] = await this.db.read({
                     username: username.toLowerCase()
                 })
